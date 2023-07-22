@@ -41,23 +41,4 @@ var isValidBST = function (root) {
 
     return dfs(root, -Infinity, Infinity);
 };
-
-// const dfs = (node, min, max) => {
-//     if (node === null || node.val === null) {
-//         return true;
-//     }
-
-//     const isLeftValid = node.left === null
-//         || node.left.val === null
-//         || (node.left.val < node.val && node.left.val > min);
-//     const isRightValid = node.right === null
-//         || node.right.val === null
-//         || (node.right.val > node.val && node.right.val < max);
-
-//     if (!isLeftValid || !isRightValid) {
-//         return false;
-//     }
-
-//     return dfs(node.left, min, node.val) && dfs(node.right, node.val, max);
-// }
 // @lc code=end
