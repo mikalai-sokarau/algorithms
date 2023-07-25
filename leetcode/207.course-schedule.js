@@ -8,7 +8,7 @@
 /*
 T: O(N + M)
 S: O(N + M)
-technique: topological sort + adjacensy list
+technique: topological sort + adjacency list
 */
 /**
  * @param {number} numCourses
