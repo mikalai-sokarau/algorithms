@@ -25,14 +25,25 @@ Topological sort (remove nodes that don't have parents to make sure that graph d
 10. If indegree list still contains nodes with the number of parents > 0 - there is a loop in the graph.
 
 Dijkstra algorithm (to find the best path):
+Works only for graphs with positive values.
 1. Initialize a queue to navigate through nodes.
 2. Initialize an array to save distances. Length of the array equals to the number of nodes. The array filled with +Infinity values.
 3. Start with the starting node.
 4. Add its index as 0 to the array with distances (since visiting this node doesn't take any time).
 5. Loop through vertexies reachable from this node.
-6. If the edge weight to the vertex less then the weight saved in the distances array, update it and push its index to the queue.
+6. Compare current node weight and weight TO the target with target weight, if total weight is less - update it and push this node index to the queue.
 7. Repeat for every edge.
 8. Choose a node with the smallest weight from the queue.
 9. Repeat steps 5-8 untill the queue is empty.
 10. If the distances array contains +Infinity values - vertexies under these indexes are unreachable.
+
+Bellman-Ford algorithm:
+Works for graphs with negative values, but without negative cycles.
+1. Initialize an array to save distances. Length of the array equals to the number of nodes. The array filled with +Infinity values.
+2. Initialize a counter with n - 1, where n is the number of all edges of the graph.
+3. Set distances[starting point] as 0 (since visiting this node doesn't take any time).
+4. Loop while counter > 0.
+5. Compare current node weight and weight TO the target with target weight, if total weight is less - rewrite target weight.
+6. Decrement a counter.
+7. When the loop is over and the distances array contains +Infinity values - vertexies under these indexes are unreachable.
 */
