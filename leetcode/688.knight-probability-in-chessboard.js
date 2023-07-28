@@ -22,47 +22,38 @@ var directions = [
     [-2, 1],
     [-1, -2],
 ];
-
+/*
+T: O(N^2 x K)
+S: O(N^2 x K)
+Technique: DP top-down + memoization
+*/
 var knightProbability = function (n, k, row, column) {
-    const cache = Array.from({ length: n }, () => new Array(n).fill(false));
+    const cache = new Array(k + 1).fill(0)
+        .map(() => new Array(n).fill(0)
+        .map(() => new Array(n).fill(undefined)));
 
     return move(n, k, row, column, cache);
 };
 
 var move = (n, k, row, column, cache) => {
+    if (row < 0 || column < 0 || row >= n || column >= n) {
+        return 0;
+    }
     if (k === 0) {
         return 1;
     }
-    if (cache[row][column]) {
-        return cache[row][column];
+    if (cache[k][row][column] !== undefined) {
+        return cache[k][row][column];
     }
 
-    const validSteps = [];
+    let probability = 0;
 
-    for (let [dirR, dirC] of directions) {
-        const r = row + dirR;
-        const c = column + dirC;
-
-        if (r < 0 || c < 0 || r >= n || c >= n) {
-            continue;
-        }
-
-        validSteps.push([r, c]);
+    for (let [r, c] of directions) {
+        probability += move(n, k - 1, row + r, column + c, cache) / directions.length;
     }
-
-    let probability = validSteps.length / directions.length;
-
-
-    // let stepsProbability = 0;
-
-    for (let step of validSteps) {
-        cache[step[0]][step[1]] = move(n, k - 1, step[0], step[1], cache) / directions.length;
-        probability += cache[step[0]][step[1]];
-    }
-
-    // probability *= (stepsProbability / validSteps.length) || 0;
+    
+    cache[k][row][column] = probability;
 
     return probability;
 }
 // @lc code=end
-
