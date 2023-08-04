@@ -9,22 +9,42 @@ Test:
 T: O(n)
 S: O(n)
 */
-function reverseWord(word, left, right) {
+function reverseLetters(letters, left, right) {
     while (left < right) {
-        [word[left], word[right]] = [word[right], word[left]];
+        const tmp = letters[left];
+
+        letters[left] = letters[right];
+        letters[right] = tmp;
 
         left++;
         right--;
     }
 }
-function reverseWords(sentence) {
-    const words = sentence.split(' ').reverse();
 
-    for (let word of words) {
-        reverseWord(word, 0, word.length - 1)
+function reverseWords(sentence) {
+    const letters = sentence.trim().replace(/\s+/g, ' ').split('');
+    
+    reverseLetters(letters, 0, letters.length - 1);
+
+    let left = 0;
+
+    for (let i = 0; i <= letters.length; i++) {
+        if (letters[i] !== ' ' && i !== letters.length) {
+            continue;
+        }
+
+        reverseLetters(letters, left, i - 1);
+
+        left = i + 1;
     }
 
-    return words.filter(Boolean).join(' ');
+    return letters.join('');
 }
+
+const reverseWordsEasy = (sentence) => sentence
+    .split(' ')
+    .reverse()
+    .filter(Boolean)
+    .join(' ');
 
 console.log(reverseWords('friend! my    Hello  '))
