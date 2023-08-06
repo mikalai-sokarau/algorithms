@@ -20,10 +20,6 @@ function findMaxSlidingWindow(nums, w) {
     const queue = new Deque();
     const result = [];
 
-    if (w > nums.length) {
-        w = nums.length;
-    }
-
     for (let i = 0; i < w; i++) {
         cleanUp(i, nums, queue);
 
