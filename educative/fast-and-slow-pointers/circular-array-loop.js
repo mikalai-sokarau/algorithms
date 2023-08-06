@@ -6,7 +6,6 @@ When skipping forward or backward, wrap around if you reach either end of the ar
 For this reason, we are calling it a circular array.
 Determine if this circular array has a cycle.
 A cycle is a sequence of indices in the circular array characterized by the following:
-
 * The same set of indices is repeated when the sequence is traversed in accordance with the aforementioned rules.
 * The length of the sequence is at least two.
 * The loop must be in a single direction, forward or backward.
@@ -14,9 +13,15 @@ A cycle is a sequence of indices in the circular array characterized by the foll
 
 
 Test: 
-
+[2sf, 5, -4, 3, -1, 4]    :  false
+[5, -1, 1, 1, -7, -9]   :  false
+[-2, -3, 1, -3, 2]      :  true
 
 Complexity:
 T: O()
 S: O()
 */
+
+export function circularArrayLoop(nums){
+
+}
