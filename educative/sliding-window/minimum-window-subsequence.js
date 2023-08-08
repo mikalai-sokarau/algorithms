@@ -9,60 +9,58 @@ without changing the order of the remaining elements.
 Test: 
 abcdef, bce         :  bcde
 marshmellow, rml    :  rshmel
-barsqtagq, aq       :  arsq 
+barsqtagq, aq       :  agq 
 hello, ez           :  ""
 hello, ze           :  ""
 abcdbebe, bbe       :  bebe
 
 Complexity:
-T: O()
-S: O()
+T: O(n * m)
+S: O(1)
 */
 
 function minWindow(str1, str2) {
     let start = 0;
     let end = 0;
     let pointer = 0;
-    const windows = [];
+    let min = '';
+    let minLength = Infinity;
 
     while (start < str1.length) {
-        if (str1[start] === str2[0]) {
-            end = start + 1;
-            pointer = 1;
-    
-            while (end < str1.length && pointer < str2.length) {
-                if (str1[end] === str2[pointer]) {
-                    pointer++;
+        if (str1[start] === str2[pointer]) {
+            pointer++;
 
-                    if (pointer === str2.length) {
-                        windows.push(str1.slice(start, end + 1));
-                        break;
+            if (pointer === str2.length) {
+                end = start;
+                pointer--;
+    
+                while (pointer >= 0) {
+                    if (str1[start] === str2[pointer]) {
+                        pointer--;
                     }
+                    start--;
                 }
-                end++;
+
+                start++;
+                
+                if (end - start + 1 < minLength) {
+                    min = str1.slice(start, end + 1);
+                    minLength = min.length;
+                }
+
+                pointer = 0;
             }
         }
+
         start++;
-    }
-
-    if (windows.length === 0) {
-        return '';
-    }
-
-    let min = windows[0];
-
-    for (let i = 0; i < windows.length; i++) {
-        if (windows[i].length < min.length) {
-            min = windows[i];
-        }
     }
 
     return min;
 }
 
-console.log(minWindow('abcdef', 'bce'));
-console.log(minWindow('marshmellow', 'rshmel'));
-console.log(minWindow('barsqtagq', 'aq'));
-console.log(minWindow('hello', 'ez'));
-console.log(minWindow('hello', 'ze'));
-console.log(minWindow('abcdbebe', 'bbe'));
+console.log(minWindow('abcdef', 'bce')); // bcde
+console.log(minWindow('marshmellow', 'rml')); // rshmel
+console.log(minWindow('barsqtagq', 'aq')); // agq 
+console.log(minWindow('hello', 'ez')); // ""
+console.log(minWindow('hello', 'ze')); // ""
+console.log(minWindow('abcdbebe', 'bbe')); // bebe
