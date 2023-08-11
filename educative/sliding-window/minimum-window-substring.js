@@ -11,65 +11,60 @@ adbbcabb, bab           :   abb
 adbbddsaaabdab, add     :   ddsa
 
 Complexity:
-T: O()
-S: O()
+T: O(m + n) //(s.length + t.length)
+S: O(1)
 */
 
 function minWindow(s, t) {
-    let result = '';
+    const result = [0, 0];
     let resultLength = Infinity;
-    const lettersMap = {};
+    const requiredLetters = {};
+    const windowLetters = {};
 
     for (let letter of t) {
-        lettersMap[letter] = (lettersMap[letter] ?? 0) + 1;
+        requiredLetters[letter] = (requiredLetters[letter] ?? 0) + 1;
+        windowLetters[letter] = 0;
     }
-    
-    for (let left = 0; left <= s.length - t.length; left++) {
-        if (lettersMap[s[left]]) {
-            let lettersCopy = { ...lettersMap };
-            let lettersSize = t.length;
-            let right = left;
 
-            while (lettersSize > 0) {
-                if (right >= s.length) {
-                    break;
-                }
+    const requiredLength = Object.keys(windowLetters).length;
+    let currentLength = 0;
+    let right = 0;
 
-                if (lettersCopy[s[right]]) {
-                    lettersCopy[s[right]]--;
-                    lettersSize--;
-                }
-
-                right++;
+    for (let left = 0; left <= s.length; left++) {
+        while (currentLength !== requiredLength) {
+            if (right > s.length) {
+                break;
             }
 
-            right--;
+            if (requiredLetters[s[right]]) {
+                windowLetters[s[right]]++;
 
-            if (lettersSize === 0) {
-                lettersCopy = { ...lettersMap };
-                lettersSize = t.length;
-                left = right;
-
-                while (lettersSize > 0) {
-                    if (lettersCopy[s[left]]) {
-                        lettersCopy[s[left]]--;
-                        lettersSize--;
-                    }
-    
-                    left--;
+                if (windowLetters[s[right]] === requiredLetters[s[right]]) {
+                    currentLength++;
                 }
-
-                left++;
             }
 
-            if (lettersSize === 0 && right + 1 - left < resultLength) {
-                result = s.slice(left, right + 1);
-                resultLength = result.length;
+            right++;
+        }
+
+        if (currentLength === requiredLength) {
+            if (right - left < resultLength) {
+                result[0] = left;
+                result[1] = right;
+                resultLength = right - left;
+            }
+        }
+
+        if (requiredLetters[s[left]]) {
+            windowLetters[s[left]]--;
+
+            if (windowLetters[s[left]] < requiredLetters[s[left]]) {
+                currentLength--;
             }
         }
     }
 
-    return result;
+    return resultLength === Infinity ? '' : s.slice(...result);
 }
 
 console.log(minWindow('adbbcabb', 'bab'));
