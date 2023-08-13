@@ -18,24 +18,24 @@ parent -> right: index * 2 + 2
 function heapify(heap, i) {
     const left = 2 * i + 1;
     const right = left + 1;
-    let smallest = i;
+    let min = i;
 
-    if (left < heap.length && heap[left] < heap[i]) {
-        smallest = left;
+    if (left < heap.length && heap[left] > heap[min]) {
+        min = left;
     }
 
-    if (right < heap.length && heap[right] < heap[smallest]) {
-        smallest = right;
+    if (right < heap.length && heap[right] > heap[min]) {
+        min = right;
     }
 
-    if (smallest !== i) {
-        [heap[i], heap[smallest]] = [heap[smallest], heap[i]];
-        heapify(heap, smallest);
+    if (min !== i) {
+        [heap[i], heap[min]] = [heap[min], heap[i]];
+        heapify(heap, min);
     }
 }
 
 function convertMax(maxHeap) {
-    let i = Math.floor(maxHeap.length / 2) - 1;
+    let i = Math.floor(maxHeap.length / 2);
 
     while (i >= 0) {
         heapify(maxHeap, i);
