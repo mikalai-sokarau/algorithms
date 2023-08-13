@@ -12,7 +12,7 @@ Test:
 
 Complexity:
 T: O(n + klog(n))
-S: O(n)
+S: O(1)
 */
 
 function findKSmallest(arr, k) {
