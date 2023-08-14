@@ -1,4 +1,4 @@
-import { MinHeap } from '../../data-structures/heap/min-heap.mjs';
+import { Heap } from '../../data-structures/heap/heap.mjs';
 import { Interval } from '../../data-structures/interval.mjs';
 
 /*
@@ -11,12 +11,14 @@ Your task is to find the list of intervals representing the free time for all th
 
 Test: 
 [[[3,5],[8,10]], [[4,6],[9,12]], [[5,6],[8,10]]]      :   [6,8]
+[[[1,2],[5,6]], [[1,3]], [[4,10]]]                    :   [3,4]
 [[[1,2],[3,4]], [[2,3]],[[4,6]]]                      :   []
 
 
 Complexity:
-T: O(n + nlog(n)) 
-S: O(n)
+T: O(nlog(k))
+S: O(k)
+where k is number of employees, n is number of intervals
 
 class Interval {
     constructor(start, end) {
@@ -27,25 +29,28 @@ class Interval {
 */
 
 function employeeFreeTime(schedule){
-    const heap = new MinHeap([], (a, b) => a.start - b.start);
+    const heap = new Heap([], (a, b) => a[0] - b[0]);
     const freeTime = [];
 
-    for (const intervals of schedule) {
-        for (const i of intervals) {
-            heap.offer(i);
-        }
+    for (let i = 0; i < schedule.length; i++) {
+        heap.offer([schedule[i][0].start, i, 0]);
     }
 
-    let prev = heap.poll();
+    const [_, firstEmployeeIndex, firstIntervalIndex] = heap.peek()
+    let prevEnd = schedule[firstEmployeeIndex][firstIntervalIndex].end;
 
     while (heap.size() > 0) {
-        const current = heap.poll();
+        const [_, eIndex, iIndex] = heap.poll();
+        const interval = schedule[eIndex][iIndex];
 
-        if (prev.end < current.start) {
-            freeTime.push(new Interval(prev.end, current.start));
-            prev = current;
-        } else if (prev.end < current.end) {
-            prev.end = current.end;
+        if (prevEnd < interval.start) {
+            freeTime.push(new Interval(prevEnd, interval.start));
+        }
+
+        prevEnd = Math.max(prevEnd, interval.end);
+
+        if (iIndex + 1 < schedule[eIndex].length) {
+            heap.offer([schedule[eIndex][iIndex + 1].start, eIndex, iIndex + 1]);
         }
     }
     
