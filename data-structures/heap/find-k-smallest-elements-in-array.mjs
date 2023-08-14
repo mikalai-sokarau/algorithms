@@ -1,4 +1,4 @@
-import { MinHeap } from "./min-heap.mjs";
+import { Heap } from "./heap.mjs";
 
 /*
 Statement:
@@ -16,13 +16,11 @@ S: O(1)
 */
 
 function findKSmallest(arr, k) {
-  const heap = new MinHeap();
+  const heap = new Heap(arr);
   const result = [];
 
-  heap.buildHeap(arr);
-
   for (let i = 0; i < k; i++) {
-    result.push(heap.removeMin());
+    result.push(heap.poll());
   }
 
   return result;

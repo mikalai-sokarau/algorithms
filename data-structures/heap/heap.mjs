@@ -42,7 +42,7 @@ export class Heap {
   percolateUp(index) {
     while (index > 0) {
       const parentIndex = (index - 1) >> 1;
-      if (this.compareVal(this.data[index][0], this.data[parentIndex][0]) < 0) {
+      if (this.compareVal(this.data[index], this.data[parentIndex]) < 0) {
         this.swap(index, parentIndex);
         index = parentIndex;
       } else {
@@ -60,14 +60,14 @@ export class Heap {
 
       if (
         leftIndex <= lastIndex &&
-        this.compareVal(this.data[leftIndex][0], this.data[findIndex][0]) < 0
+        this.compareVal(this.data[leftIndex], this.data[findIndex]) < 0
       ) {
         findIndex = leftIndex;
       }
 
       if (
         rightIndex <= lastIndex &&
-        this.compareVal(this.data[rightIndex][0], this.data[findIndex][0]) < 0
+        this.compareVal(this.data[rightIndex], this.data[findIndex]) < 0
       ) {
         findIndex = rightIndex;
       }
