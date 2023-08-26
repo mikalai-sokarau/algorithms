@@ -1,7 +1,7 @@
 export class MinHeap {
-  constructor(data = new Array()) {
+  constructor(data = new Array(), compareVal = (a, b) => a - b) {
     this.data = data;
-    this.compareVal = (a, b) => a - b;
+    this.compareVal = compareVal;
     this.heapify();
   }
 
