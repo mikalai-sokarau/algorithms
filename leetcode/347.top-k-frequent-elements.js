@@ -8,7 +8,7 @@
 /*
 T: O(n)
 S: O(n)
-Technique: hashmap
+Technique: hashmap + bucket sort
 */
 /**
  * @param {number[]} nums
@@ -16,18 +16,31 @@ Technique: hashmap
  * @return {number[]}
  */
 var topKFrequent = function(nums, k) {
-    const map = {};
+    const map = new Map();
+    const bucket = [];
+    const result = [];
 
-    for (let num of nums) {
-        map[num] = (map[num] ?? 0) + 1;
+    for (const num of nums) {
+      map.set(num, (map.get(num) ?? 0) + 1);
     }
 
-    const sorted = Object.entries(map)
-        .sort((a, b) => b[1] - a[1]);
+    for (const [num, freq] of map) {
+      if (!bucket[freq]) {
+        bucket[freq] = [];
+      }
+      bucket[freq].push(num);
+    }
 
-    sorted.length = k;
+    for (let i = bucket.length - 1; i >= 0; i--) {
+      if (result.length >= k) {
+        break;
+      }
+      if (bucket[i]) {
+        result.push(...bucket[i]);
+      }
+    }
 
-    const result = sorted.map((pair) => pair[0]);
+    result.length = k;
 
     return result;
 };
