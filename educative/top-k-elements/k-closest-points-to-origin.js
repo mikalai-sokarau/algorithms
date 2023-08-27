@@ -10,7 +10,7 @@ Test:
 
 
 Complexity:
-T: O(n log n)
+T: O(n log k)
 S: O(k)
 
 export class Point {
