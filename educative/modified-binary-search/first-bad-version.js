@@ -36,7 +36,7 @@ export function firstBadVersion(n) {
   versionApi.n = n;
   // --
   let first = 1;
-  let last = n - 1;
+  let last = n;
   let calls = 0;
 
   while (first < last) {
@@ -44,7 +44,7 @@ export function firstBadVersion(n) {
     calls++;
 
     if (isBadVersion(middle)) {
-      last = middle - 1;
+      last = middle;
     } else {
       first = middle + 1;
     }
