@@ -4,10 +4,10 @@
  * [79] Word Search
  */
 /*
-T: O(n * m * k^4)
+T: O(n * k^3)
 S: O(k)
 where
-n * m is number of cells in the board
+n is number of cells in the board
 k is number of letters in the word
 */
 
