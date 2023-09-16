@@ -14,8 +14,8 @@ Test:
 
 
 Complexity:
-T: O(n)
-S: O(1)
+T: O(4^n)
+S: O(n)
 */
 
 function matchstickToSquare(matchsticks) {
@@ -25,43 +25,34 @@ function matchstickToSquare(matchsticks) {
     sum += m;
   }
 
-  if (sum % 4 !== 0) {
+  if (sum % 4 !== 0 || matchsticks.length < 4) {
     return false;
   }
 
-  return buildSquare(matchsticks, matchsticks.length, sum / 4, 0);
+  matchsticks.sort((a, b) => b - a);
+
+  return dfs(matchsticks, [0, 0, 0, 0], 0, sum / 4);
 }
 
-function buildSquare(matchsticks, available, sideLength, sidesBuilt) {
-  if (available === 0 && sidesBuilt === 4) {
+function dfs(matchsticks, sums, index, target) {
+  if (index === matchsticks.length) {
     return true;
   }
 
-  let currentSideLength = 0;
-  let matchsticksAvailable = available;
+  for (let i = 0; i < sums.length; i++) {
+    if (sums[i] + matchsticks[index] <= target) {
+      sums[i] += matchsticks[index];
 
-  for (let i = 0; i < matchsticks.length; i++) {
-    if (matchsticks[i] === '*') {
-      continue;
-    }
+      if (dfs(matchsticks, sums, index + 1, target)) {
+        return true;
+      }
 
-    if (currentSideLength + matchsticks[i] <= sideLength) {
-      currentSideLength += matchsticks[i];
-      matchsticks[i] = '*';
-      matchsticksAvailable--;
-    }
-
-    if (currentSideLength === sideLength) {
-      return buildSquare(
-        matchsticks,
-        matchsticksAvailable,
-        sideLength,
-        sidesBuilt + 1
-      );
+      sums[i] -= matchsticks[index];
     }
   }
 
   return false;
 }
 
-console.log(matchstickToSquare([1, 2, 2, 2, 1]));
+console.log(matchstickToSquare([5, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3])); // 12, true
+console.log(matchstickToSquare([5, 5, 5, 5, 16, 4, 4, 4, 4, 4, 3, 3, 3, 3, 4])); // 18, false
