@@ -10,7 +10,31 @@
  * @param {string} needle
  * @return {number}
  */
-var strStr = function (haystack, needle) {
-  return haystack.indexOf(needle);
+/*
+Test:
+'abclalalada', 'lalada'   :   5
+
+Complexity:
+T: O(n * m)
+S: O(1)
+*/
+const strStr = (haystack, needle) => {
+  let left = 0;
+
+  while (left <= haystack.length - needle.length) {
+    let right = 0;
+
+    while (right < needle.length && haystack[left + right] === needle[right]) {
+      right++;
+    }
+
+    if (right === needle.length) {
+      return left;
+    }
+
+    left++;
+  }
+
+  return -1;
 };
 // @lc code=end
