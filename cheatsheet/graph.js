@@ -7,7 +7,7 @@ Adjacency list (vertex children list):
 3. Loop throgh the array representing a graph.
 4. Add children node to the array stored under the index of the node.
 
-Indegree list (number of vertex parents):
+Indegree list (number of vertex parents/dependencies):
 1. Create an empty array.
 2. Loop through the array that represents a graph.
 3. Increment by 1 value by index in the array each time the parent is present in the graph array.
