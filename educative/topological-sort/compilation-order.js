@@ -55,7 +55,7 @@ function findCompilationOrder(dependencies) {
     }
   }
 
-  // checking that all all verticies were counted
+  // checking that all the verticies were counted
   if (result.length !== Object.keys(graph).length) {
     result.length = 0;
   }
