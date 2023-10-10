@@ -11,7 +11,7 @@ var MyQueue = function() {
     this.second = [];
 };
 
-/** 
+/**
  * @param {number} x
  * @return {void}
  */
@@ -23,11 +23,7 @@ MyQueue.prototype.push = function(x) {
  * @return {number}
  */
 MyQueue.prototype.pop = function() {
-    if (!this.second.length) {
-        while (this.first.length) {
-            this.second.push(this.first.pop());
-        }
-    }
+    this.peek();
 
     return this.second.pop();
 };
@@ -51,7 +47,7 @@ MyQueue.prototype.empty = function() {
     return this.first.length === 0 && this.second.length === 0;
 };
 
-/** 
+/**
  * Your MyQueue object will be instantiated and called as such:
  * var obj = new MyQueue()
  * obj.push(x)
