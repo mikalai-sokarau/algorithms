@@ -18,28 +18,28 @@
  * @return {number[]}
  */
 /*
-T: 0(N)
-S: O(N)
+T: 0(n)
+S: O(h) where h is height of the tree
 */
 // dfs
 var rightSideView = function (root) {
-    if (!root) return [];
+  if (!root) return [];
 
-    const dfs = (node, level, result) => {
-        if (result.length < level) {
-            result.push(node.val);
-        }
-        if (node.right) {
-            dfs(node.right, level + 1, result);
-        }
-        if (node.left) {
-            dfs(node.left, level + 1, result);
-        }
-
-        return result;
+  function dfs(node, index, result) {
+    if (index === result.length) {
+      result.push(node.data);
     }
 
-    return dfs(root, 1, []);
+    for (const child of [node.right, node.left]) {
+      if (child) {
+        dfs(child, index + 1, result);
+      }
+    }
+
+    return result;
+  }
+
+  return dfs(root, 0, []);
 };
 // bfs
 // var rightSideView = function(root) {
