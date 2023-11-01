@@ -14,8 +14,8 @@
  * }
  */
 /*
-T: O(N)
-S: O(N)
+T: O(n)
+S: O(h) where h is height of the tree
 */
 /**
  * @param {TreeNode} root
@@ -23,17 +23,13 @@ S: O(N)
  */
 var isValidBST = function (root) {
     const dfs = (node, min, max) => {
-        if (!node) {
-            return true;
+        if (!node) return true;
+
+        if (node.val >= max || !dfs(node.left, min, node.val)) {
+          return false;
         }
-        if (node.val >= max || node.val <= min) {
-            return false;
-        }
-        if (node.left && !dfs(node.left, min, node.val)) {
-            return false;
-        }
-        if (node.right && !dfs(node.right, node.val, max)) {
-            return false;
+        if (node.val <= min || !dfs(node.right, node.val, max)) {
+          return false;
         }
 
         return true;
