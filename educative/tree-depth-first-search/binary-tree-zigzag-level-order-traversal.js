@@ -14,39 +14,30 @@ Solution:
 
 
 Complexity:
-T: O()
-S: O()
+T: O(n)
+S: O(n)
 */
 
 function zigzagLevelOrder(root) {
   if (!root) return [];
 
-  const result = [[]];
-  let stack = [root];
-  let pointer = 0;
-  let counter = 1;
-  let direction = 1;
+  const result = [];
+  const queue = [root];
+  let moveRight = true;
 
-  while (counter) {
-    const curr = stack[pointer];
+  while (queue.length) {
+    const level = [];
 
-    if (curr.left) stack.push(curr.left);
-    if (curr.right) stack.push(curr.right);
+    for (let i = queue.length; i > 0; i--) {
+      const curr = queue.shift();
 
-    result[result.length - 1].push(curr.data);
-    pointer += direction;
-    counter--;
-
-    if (!counter) {
-      stack = stack.slice(result[result.length - 1].length);
-      counter = stack.length;
-      direction *= -1;
-      pointer = direction > 0 ? 0 : stack.length - 1;
-
-      if (stack.length) {
-        result.push([]);
-      }
+      level.push(curr.data);
+      curr.left && queue.push(curr.left);
+      curr.right && queue.push(curr.right);
     }
+
+    result.push(moveRight ? level : level.reverse());
+    moveRight = !moveRight;
   }
 
   return result;
