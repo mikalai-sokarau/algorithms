@@ -13,20 +13,40 @@
  *     this.right = (right===undefined ? null : right)
  * }
  */
+/*
+Complexity:
+T: O(n)
+S: O(h) where h is the height of the tree
+*/
 /**
  * @param {TreeNode} root
  * @return {number}
  */
 var findSecondMinimumValue = function (root) {
-  const min = [-Infinity, -Infinity];
+  let first = Infinity;
+  let second = Infinity;
 
   const dfs = (node) => {
     if (!node) return;
+
+    dfs(node.left);
+    dfs(node.right);
+
+    if (node.val === first || node.val === second) {
+      return;
+    }
+
+    if (node.val < first) {
+      second = first;
+      first = node.val;
+    } else if (node.val < second) {
+      second = node.val;
+    }
   }
 
   dfs(root);
 
-  if (min[1] !== -Infinity) return min[1];
+  if (second !== Infinity) return second;
 
   return -1
 };
