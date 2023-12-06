@@ -3,7 +3,12 @@
  *
  * [322] Coin Change
  */
-
+/*
+Complexity:
+T: O(c * a)
+S: O(a)
+where c is coins, a is amount
+*/
 // @lc code=start
 /**
  * @param {number[]} coins
@@ -11,24 +16,15 @@
  * @return {number}
  */
 var coinChange = function (coins, amount) {
-  const dp = [];
-  let min = Infinity;
+  const dp = new Array(amount + 1).fill(Infinity);
+  dp[0] = 0;
 
-  for (const c of coins) {
-    dp[c] = 1;
+  for (const coin of coins) {
+    for (i = coin; i <= amount; i++) {
+      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    }
   }
 
-  var findFewest = (sum, numOfCoins) => {};
-
-  findFewest(0, 0);
-
-  if (min === Infinity) {
-    return -1;
-  }
-
-  return min;
+  return dp[amount] === Infinity ? -1 : dp[amount];
 };
-
 // @lc code=end
-
-// console.log(coinChange([1, 2, 5], 100));
