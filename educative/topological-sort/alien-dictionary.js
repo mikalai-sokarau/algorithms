@@ -18,13 +18,15 @@ these cases will never result in a valid alphabet because in a valid alphabet, p
 
 
 Complexity:
-T: O()
-S: O()
+T: O(c)
+S: O(c)
+
+where c is the number of characters in the input array
 */
 
 function alienOrder(words) {
   const adjList = {};
-  const indegree = new Array(26).fill(0);
+  const inDegree = {};
 
   for (const word of words) {
     for (const char of word) {
@@ -35,48 +37,40 @@ function alienOrder(words) {
   }
 
   for (let i = 1; i < words.length; i++) {
-    const first = words[i - 1];
-    const second = words[i];
-    const length = Math.min(first.length, second.length);
+    const prev = words[i - 1];
+    const curr = words[i];
+    const length = Math.min(prev.length, curr.length);
 
     for (let j = 0; j < length; j++) {
-      if (first[j] !== second[j]) {
-        const firstChar = first[j];
-        const secondChar = second[j];
-
-        if (!adjList[firstChar].has(secondChar)) {
-          adjList[firstChar].add(secondChar);
-          indegree[secondChar.charCodeAt(0) - 'a'.charCodeAt(0)]++;
-        }
+      if (prev[j] !== curr[j]) {
+        adjList[prev[j]].add(curr[j]);
+        inDegree[curr[j]] = (inDegree[curr[j]] ?? 0) + 1;
 
         break;
-      } else if (j === length - 1 && first.length > second.length) {
+      } else if (j + 1 === length && prev.length > curr.length) {
         return '';
       }
     }
   }
 
-  const result = [];
+  let result = '';
   const queue = [];
 
-  for (let i = 0; i < indegree.length; i++) {
-    const char = String.fromCharCode('a'.charCodeAt(0) + i);
-
-    if (adjList[char] && indegree[i] === 0) {
-      queue.push(char);
+  for (const key of Object.keys(adjList)) {
+    if (!inDegree[key]) {
+      queue.push(key);
     }
   }
 
   while (queue.length) {
     const curr = queue.shift();
 
-    result.push(curr);
+    result += curr;
 
     for (const neighbor of adjList[curr]) {
-      const char = neighbor.charCodeAt(0) - 'a'.charCodeAt(0);
-      indegree[char]--;
+      inDegree[neighbor]--;
 
-      if (indegree[char] === 0) {
+      if (inDegree[neighbor] === 0) {
         queue.push(neighbor);
       }
     }
@@ -86,7 +80,7 @@ function alienOrder(words) {
     return '';
   }
 
-  return result.join('');
+  return result;
 }
 
 // alienOrder(['o','l','m','s']); // olms
